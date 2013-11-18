@@ -29,7 +29,7 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2013 Damyon Wiese  <damyon@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class tinymcefour extends texteditor {
+class tinymcefour_texteditor extends texteditor {
 
     /**
      * Is the current browser supported by this editor?
@@ -74,7 +74,13 @@ class tinymcefour extends texteditor {
      * @param null $fpoptions
      */
     public function use_editor($elementid, array $options=null, $fpoptions=null) {
-        global $PAGE;
+        global $PAGE, $CFG;
+        if ($CFG->debugdeveloper) {
+            $PAGE->requires->js(new moodle_url($CFG->httpswwwroot.'/lib/editor/tinymcefour/tinymce/tiny_mce_src.js'));
+        } else {
+            $PAGE->requires->js(new moodle_url($CFG->httpswwwroot.'/lib/editor/tinymcefour/tinymce/tiny_mce.js'));
+        }
+//tinymce.init({selector:'textarea'});
 
     }
 
@@ -87,8 +93,8 @@ class tinymcefour extends texteditor {
      */
     protected function get_init_params($elementid, array $options=null, array $fpoptions=null) {
         global $PAGE;
-
+        $params = "";
         $directionality = get_string('thisdirection', 'langconfig');
-        
+        return $params;
     }
 }
