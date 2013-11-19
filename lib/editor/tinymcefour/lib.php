@@ -76,11 +76,11 @@ class tinymcefour_texteditor extends texteditor {
     public function use_editor($elementid, array $options=null, $fpoptions=null) {
         global $PAGE, $CFG;
         if ($CFG->debugdeveloper) {
-            $PAGE->requires->js(new moodle_url($CFG->httpswwwroot.'/lib/editor/tinymcefour/tinymce/tiny_mce_src.js'));
+            $PAGE->requires->js(new moodle_url($CFG->httpswwwroot.'/lib/editor/tinymcefour/tinymce/tinymce.dev.js'));
         } else {
-            $PAGE->requires->js(new moodle_url($CFG->httpswwwroot.'/lib/editor/tinymcefour/tinymce/tiny_mce.js'));
+            $PAGE->requires->js(new moodle_url($CFG->httpswwwroot.'/lib/editor/tinymcefour/tinymce/tinymce.js'));
         }
-        $PAGE->requires->js_init_call('M.editor_tinymce.init_editor', array($elementid, $this->get_init_params($elementid, $options)), true);
+        $PAGE->requires->js_init_call('M.editor_tinymcefour.init_editor', array($elementid, $this->get_init_params($elementid, $options)), true);
     }
 
     /**
