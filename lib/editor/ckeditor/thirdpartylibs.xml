@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<libraries>
+  <library>
+    <location>ckeditor</location>
+    <name>CKEditor</name>
+    <license>GPL</license>
+    <version>4.3</version>
+    <licenseversion>2.+</licenseversion>
+  </library>
+</libraries>
