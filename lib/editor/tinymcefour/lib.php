@@ -80,8 +80,7 @@ class tinymcefour_texteditor extends texteditor {
         } else {
             $PAGE->requires->js(new moodle_url($CFG->httpswwwroot.'/lib/editor/tinymcefour/tinymce/tiny_mce.js'));
         }
-//tinymce.init({selector:'textarea'});
-
+        $PAGE->requires->js_init_call('M.editor_tinymce.init_editor', array($elementid, $this->get_init_params($elementid, $options)), true);
     }
 
     /**
@@ -93,8 +92,12 @@ class tinymcefour_texteditor extends texteditor {
      */
     protected function get_init_params($elementid, array $options=null, array $fpoptions=null) {
         global $PAGE;
-        $params = "";
-        $directionality = get_string('thisdirection', 'langconfig');
+        $params = array(
+            'selector' => $elementid,
+        );
+//        $directionality = get_string('thisdirection', 'langconfig');
+
+
         return $params;
     }
 }
