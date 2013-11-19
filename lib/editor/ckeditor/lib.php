@@ -92,8 +92,9 @@ class ckeditor_texteditor extends texteditor {
                      'pasteFromWordPromptCleanup' => true, // Warn before accepting gifts from word.
                      'removePlugins' => 'about', // Hide about button.
                      'disableNativeSpellChecker' => false,
+                     'skin' => 'moodle',
                      'toolbarCanCollapse' => true, // Ohh - nice.
-);
+        );
     }
 
     /**
