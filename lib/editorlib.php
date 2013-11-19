@@ -54,7 +54,6 @@ function editors_get_preferred_editor($format = NULL) {
     // now find some plugin that supports format and is available
     $editor = false;
     foreach ($enabled as $e) {
-        var_dump($e);
         if (!$e->supported_by_browser()) {
             // bad luck, this editor is not compatible
             echo "Browser not supported";
