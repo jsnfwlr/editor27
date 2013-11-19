@@ -156,9 +156,10 @@ function editors_head_setup() {
     global $CFG;
 
     if (empty($CFG->texteditors)) {
-        $CFG->texteditors = 'tinymce,textarea';
+        $CFG->texteditors = 'ckeditor,tinymce,textarea';
     }
     $active = explode(',', $CFG->texteditors);
+
 
     foreach ($active as $editorname) {
         if (!$editor = get_texteditor($editorname)) {
