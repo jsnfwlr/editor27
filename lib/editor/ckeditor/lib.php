@@ -74,7 +74,26 @@ class ckeditor_texteditor extends texteditor {
 
         $PAGE->requires->js('/lib/editor/ckeditor/config.js');
         $PAGE->requires->js('/lib/editor/ckeditor/ckeditor/ckeditor.js');
-        $PAGE->requires->js_module('editor_ckeditor');
+    }
+
+    /**
+     * Return an array of ckeditor config options.
+     *
+     * @return array - The array of options.
+     */
+    public function get_ckeditor_config($params) {
+        global $CFG;
+
+        return array('customConfig'=>'', // Prevent an extra js file load.
+                     'language' => $params['language'], // Pass the current language.
+                     'contentsLanguage' => $params['language'], // Pass the current language.
+                     'contentsCSS' => $params['content_css'], // Apply theme styles to the content.
+                     'contentsLangDirection' => $params['directionality'], // Set content direction.
+                     'pasteFromWordPromptCleanup' => true, // Warn before accepting gifts from word.
+                     'removePlugins' => 'about', // Hide about button.
+                     'disableNativeSpellChecker' => false,
+                     'toolbarCanCollapse' => true, // Ohh - nice.
+);
     }
 
     /**
@@ -88,9 +107,11 @@ class ckeditor_texteditor extends texteditor {
         global $PAGE;
 
         $params = $this->get_init_params($elementid, $options, $fpoptions);
-        $code = 'M.editor_ckeditor.init';
+        $config = $this->get_ckeditor_config($params);
+        $config['params'] = $params;
+        $jscode = 'CKEDITOR.replace("' . $elementid . '", ' . json_encode($config) . ')';
 
-        $PAGE->requires->js_init_call($code, $params, true);
+        $PAGE->requires->js_init_code($jscode);
     }
 
     /**
