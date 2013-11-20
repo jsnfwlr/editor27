@@ -29,9 +29,7 @@ require('../../config.php');
 require_once("$CFG->dirroot/lib/jslib.php");
 require_once("$CFG->dirroot/lib/configonlylib.php");
 
-$lang  = optional_param('lang', 'en', PARAM_RAW);
-$lang  = preg_replace('/\/.*/', '', $lang);
-$lang  = clean_param($lang, PARAM_SAFEDIR);
+$lang  = current_language();
 $rev   = optional_param('rev', -1, PARAM_INT);
 
 $requestedlang = $lang;
@@ -41,6 +39,9 @@ $PAGE->set_url('/filter/mathjax/language.php');
 if (!get_string_manager()->translation_exists($lang, false)) {
     $lang = 'en';
     $rev = -1; // Do not cache missing langs.
+    if (empty($requestedlang)) {
+        $requestedlang = 'en';
+    }
 }
 
 $candidate = "$CFG->localcachedir/filter_mathjax/$rev/$lang.js";
@@ -60,7 +61,8 @@ $string = get_string_manager()->load_component_strings('filter_mathjax', $lang);
 // Process the $strings to match expected lang array structure.
 $output = '';
 $output .= 'MathJax.Localization.directory = "' . $CFG->wwwroot . '/filter/mathjax/language.php?lang="' . "\n";
-$config = array('menuTitle' => get_string_manager()->get_string('thislanguage', 'langconfig', null, $lang));
+$langstring = get_string_manager()->get_string('thislanguage', 'langconfig', null, $lang);
+$config = array('menuTitle' => $langstring);
 $result = array();
 
 foreach ($string as $key=>$value) {
@@ -78,7 +80,8 @@ foreach ($string as $key=>$value) {
     $result[$domain]['strings'][$string] = $value;
 }
 $config['domains'] = $result;
-$output .= 'MathJax.Localization.addTranslation("' . $requestedlang . '", null, ' . json_encode($config) . ');';
+$output .= 'MathJax.Localization.strings = {"' . $requestedlang . '" : {menuTitle: "' . $langstring . '"}};' . "\n";
+$output .= 'MathJax.Localization.addTranslation("' . $requestedlang . '", null, ' . json_encode($config) . ');' . "\n";
 
 $output .= 'MathJax.Ajax.loadComplete("[MathJax]/config/../../language.php?.js");';
 if ($rev > -1) {
