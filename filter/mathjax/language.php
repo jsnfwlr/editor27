@@ -83,7 +83,12 @@ $config['domains'] = $result;
 $output .= 'MathJax.Localization.strings = {"' . $requestedlang . '" : {menuTitle: "' . $langstring . '"}};' . "\n";
 $output .= 'MathJax.Localization.addTranslation("' . $requestedlang . '", null, ' . json_encode($config) . ');' . "\n";
 
-$output .= 'MathJax.Ajax.loadComplete("[MathJax]/config/../../language.php?.js");';
+$output .= 'var url = "";' . "\n";
+$output .= 'for (url in MathJax.Ajax.loading) {' . "\n";
+$output .= '    if (url.indexOf("language") > -1) {' . "\n";
+$output .= '        MathJax.Ajax.loadComplete(url);' . "\n";
+$output .= '    }' . "\n";
+$output .= '}' . "\n";
 if ($rev > -1) {
     js_write_cache_file_content($candidate, $output);
     // verify nothing failed in cache file creation
