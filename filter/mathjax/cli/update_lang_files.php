@@ -110,12 +110,12 @@ function filter_mathjax_parse_js_files() {
 
         // Remove comments.
         $first = strpos($content, 'strings:{') + strlen('strings:{');
-        $last = strpos($content, '}', $first);
+        $last = strpos($content, '}}', $first);
         $content = substr($content, $first, $last - $first);
         // Quote the array keys (valid JSON).
         $content = str_replace('",', "\";\n", $content) . ';' . "\n";
         $content = preg_replace('/^/m', '$strings[\'' . $domain . ':', $content);
-        $content = str_replace(':"', '\'] = "', $content);
+        $content = preg_replace('/:"([^,])/', '\'] = "\1', $content);
         $strings .= $content;
     }
 
