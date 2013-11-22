@@ -15,33 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This filter provides automatic support for MathJax
+ * Strings for component 'atto_link', language 'en'.
  *
- * @package    filter_mathjax
- * @copyright  2013 Damyon Wiese (damyon@moodle.com)
+ * @package    atto_link
+ * @copyright  2013 Damyon Wiese  <damyon@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-/**
- * Mathjax filtering
- */
-class filter_mathjax extends moodle_text_filter {
-
-    public function setup($page, $context) {
-        global $CFG;
-        // This only requires execution once per request.
-        static $jsinitialised = false;
-
-        if (empty($jsinitialised)) {
-            $page->requires->js(
-                    '/filter/mathjax/mathjax/MathJax.js?config=../../moodle,Safe,../../language.php?');
-            $jsinitialised = true;
-        }
-    }
-
-    public function filter($text, array $options = array()) {
-        return $text;
-    }
-}
+$string['equationhelp'] = '<h3>Equation help</h3><p>Equations are written in <a href="http://en.wikibooks.org/wiki/LaTeX/Mathematics" title="Link to wikipedia">Latex.</a></p>';
+$string['editequation'] = 'Edit equation';
+$string['preview'] = 'Preview';
+$string['save'] = 'Save';
+$string['update'] = 'Update';
+$string['pluginname'] = 'Equation editor';

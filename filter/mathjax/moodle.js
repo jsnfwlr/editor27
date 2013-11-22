@@ -302,7 +302,7 @@ MathJax.Hub.Config({
     //  in the class name.  Assigning an element this class name will
     //  prevent `tex2jax` from processing its contents.
     //
-    ignoreClass: "tex2jax_ignore",
+    ignoreClass: "feditor",
 
     //
     //  This is the class name used to mark elements whose contents SHOULD

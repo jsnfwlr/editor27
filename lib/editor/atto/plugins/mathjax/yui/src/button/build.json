@@ -1,0 +1,10 @@
+{
+  "name": "moodle-atto_mathjax-button",
+  "builds": {
+    "moodle-atto_mathjax-button": {
+      "jsfiles": [
+        "button.js"
+      ]
+    }
+  }
+}
