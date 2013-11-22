@@ -647,7 +647,7 @@ MathJax.Hub.Config({
     //  web-fonts via the @font-face CSS directive).  Note that currently
     //  only the TeX font is available as an image font.  Set this to
     //
-    //      imageFont: null,
+    imageFont: null,
     //
     //  if you want to prevent the use of image fonts (e.g., you have not
     //  installed the image fonts on your server).  In this case, only

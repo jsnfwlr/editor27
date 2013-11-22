@@ -13,4 +13,5 @@ Upgrade procedure:
 2/ bump up main version.php
 3/ update ./thirdpartylibs.xml
 4/ execute cli/update_lang_files.php and review changes in lang/en/filter_mathjax.php
-5/ delete (large) unused directories /filter/mathjax/mathjax/uncompressed + /filter/mathjax/mathjax/test
+5/ delete (large) unused directories /filter/mathjax/mathjax/uncompressed + /filter/mathjax/mathjax/test + /filter/mathjax/mathjax/fonts/HTML-CSS/Tex/png
+
