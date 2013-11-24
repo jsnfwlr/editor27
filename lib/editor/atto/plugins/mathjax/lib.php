@@ -34,10 +34,14 @@ function atto_mathjax_init_editor($elementid) {
     $icon = array('e/dragmath', 'editor_atto');
 
     $PAGE->requires->strings_for_js(array('editequation',
-                                          'save',
+                                          'insertequation',
                                           'preview',
                                           'update',
-                                          'equationhelp'),
+                                          'equationhelp',
+                                          'equationlibrary',
+                                          'showsource',
+                                          'equationsource',
+                                          'viewequationlibrary'),
                                     'atto_mathjax');
 
     $PAGE->requires->js('/filter/mathjax/mathjax/MathJax.js?config=../../moodle,Safe,../../language.php?');

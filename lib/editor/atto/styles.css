@@ -106,7 +106,8 @@ div.editor_atto_toolbar div.atto_group {
     display: inline-block;
     min-width: 4em;
 }
-.atto_form input.fullwidth {
+.atto_form input.fullwidth,
+.atto_form textarea.fullwidth {
     width: 100%;
 }
 .atto_form {

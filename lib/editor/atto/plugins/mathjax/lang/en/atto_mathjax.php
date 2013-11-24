@@ -22,9 +22,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['equationhelp'] = '<h3>Equation help</h3><p>Equations are written in <a href="http://en.wikibooks.org/wiki/LaTeX/Mathematics" title="Link to wikipedia">Latex.</a></p>';
+$string['equationhelp'] = 'Equations are written in <a target="_blank" href="http://en.wikibooks.org/wiki/LaTeX/Mathematics" title="Link to wikipedia">Latex.</a>';
 $string['editequation'] = 'Edit equation';
 $string['preview'] = 'Preview';
-$string['save'] = 'Save';
+$string['insertequation'] = 'Insert equation';
 $string['update'] = 'Update';
 $string['pluginname'] = 'Equation editor';
+$string['viewequationlibrary'] = 'View equation library';
+$string['equationlibrary'] = 'Equation library';
+$string['equationsource'] = 'Source';
+$string['showsource'] = 'Show source';
