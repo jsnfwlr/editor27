@@ -15,33 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This filter provides automatic support for MathJax
+ * Atto text editor integration version file.
  *
- * @package    filter_mathjax
- * @copyright  2013 Damyon Wiese (damyon@moodle.com)
+ * @package    atto_mathjax
+ * @copyright  2013 Damyon Wiese  <damyon@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-/**
- * Mathjax filtering
- */
-class filter_mathjax extends moodle_text_filter {
-
-    public function setup($page, $context) {
-        global $CFG;
-        // This only requires execution once per request.
-        static $jsinitialised = false;
-
-        if (empty($jsinitialised)) {
-            $page->requires->js(
-                    '/filter/mathjax/mathjax/MathJax.js?config=../../moodle,Safe,../../language.php?');
-            $jsinitialised = true;
-        }
-    }
-
-    public function filter($text, array $options = array()) {
-        return $text;
-    }
-}
+$plugin->version   = 2013080900;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2013050100;        // Requires this Moodle version.
+$plugin->component = 'atto_mathjax';  // Full name of the plugin (used for diagnostics).

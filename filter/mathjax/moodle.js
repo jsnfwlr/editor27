@@ -302,7 +302,7 @@ MathJax.Hub.Config({
     //  in the class name.  Assigning an element this class name will
     //  prevent `tex2jax` from processing its contents.
     //
-    ignoreClass: "tex2jax_ignore",
+    ignoreClass: "feditor",
 
     //
     //  This is the class name used to mark elements whose contents SHOULD
@@ -647,7 +647,7 @@ MathJax.Hub.Config({
     //  web-fonts via the @font-face CSS directive).  Note that currently
     //  only the TeX font is available as an image font.  Set this to
     //
-    //      imageFont: null,
+    imageFont: null,
     //
     //  if you want to prevent the use of image fonts (e.g., you have not
     //  installed the image fonts on your server).  In this case, only

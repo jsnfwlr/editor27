@@ -1,0 +1,8 @@
+{
+  "moodle-atto_mathjax-button": {
+    "requires": [
+        "node",
+        "escape"
+    ]
+  }
+}
