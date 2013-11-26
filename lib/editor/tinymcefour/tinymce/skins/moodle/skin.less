@@ -57,15 +57,11 @@
 @has-radius:                     true;
 @has-boxshadow:                  false;
 
-
-
-
-
 // Text colors
 @text:                           #000;
 @text-inverse:                   white;
 @text-disabled:                  #aaa;
-@text-shadow:                    0;
+@text-shadow:                    0 1px 1px hsla(hue(@text-inverse), saturation(@text-inverse), lightness(@text-inverse), 0.75);
 
 // Button
 @btn-text:                       #999;
@@ -85,11 +81,11 @@
 @btn-bg-hover:                   darken(@btn-bg, 5%);
 @btn-bg-hlight-hover:            darken(@btn-bg-hlight, 5%);
 
-@btn-primary-bg:                 #FFFFFF;
-@btn-primary-bg-hlight:          #FFFFFF;
+@btn-primary-bg:                 #0088cc;
+@btn-primary-bg-hlight:          #0044cc;
 @btn-primary-bg-hover:           darken(@btn-primary-bg, 5%);
 @btn-primary-bg-hover-hlight:    darken(@btn-primary-bg-hlight, 5%);
-@btn-primary-text:               #000;
+@btn-primary-text:               #fff;
 @btn-primary-text-shadow:        #333;
 @btn-primary-border-top:         mix(@btn-border-top, @btn-primary-bg, 50%);
 @btn-primary-border-right:       mix(@btn-border-right, @btn-primary-bg, 50%);
@@ -778,12 +774,10 @@ body .mce-abs-layout-item, .mce-abs-end {
 	border: 1px solid mix(rgb(red(@btn-border-right), green(@btn-border-right), blue(@btn-border-right)), @panel-bg, 30%);
 	border-color: @btn-border-top @btn-border-right @btn-border-bottom @btn-border-left;
 	position: relative;
-	text-shadow: @text-shadow;
-
+	height: 30px;
 	.inline-block();
 	.border-radius(3px);
-	.box-shadow(@btn-box-shadow);
-	.vertical-gradient(@btn-bg, @btn-bg-hlight);
+	background: white;
 
 	&:hover, &:focus {
 		color: @btn-text;
@@ -808,7 +802,7 @@ body .mce-abs-layout-item, .mce-abs-end {
 }
 
 .mce-btn button {
-	padding: 4px 10px;
+	padding: 5px 7px;
 	font-size: @font-size;
 	line-height: @line-height;
 	*line-height: @line-height - 4px;
@@ -825,9 +819,6 @@ body .mce-abs-layout-item, .mce-abs-end {
 	}
 }
 
-.mce-btn i {
-	text-shadow: 1px 1px @btn-text-shadow;
-}
 
 .mce-primary {
 	min-width: 50px;
