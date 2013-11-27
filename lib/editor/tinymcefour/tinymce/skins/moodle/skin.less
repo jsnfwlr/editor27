@@ -81,12 +81,12 @@
 @btn-bg-hover:                   darken(@btn-bg, 5%);
 @btn-bg-hlight-hover:            darken(@btn-bg-hlight, 5%);
 
-@btn-primary-bg:                 #0088cc;
-@btn-primary-bg-hlight:          #0044cc;
+@btn-primary-bg:                 #ffffff;
+@btn-primary-bg-hlight:          #eeeeee;
 @btn-primary-bg-hover:           darken(@btn-primary-bg, 5%);
 @btn-primary-bg-hover-hlight:    darken(@btn-primary-bg-hlight, 5%);
-@btn-primary-text:               #fff;
-@btn-primary-text-shadow:        #333;
+@btn-primary-text:               #666;
+@btn-primary-text-shadow:        #eee;
 @btn-primary-border-top:         mix(@btn-border-top, @btn-primary-bg, 50%);
 @btn-primary-border-right:       mix(@btn-border-right, @btn-primary-bg, 50%);
 @btn-primary-border-bottom:      mix(@btn-border-bottom, @btn-primary-bg, 50%);
@@ -133,7 +133,7 @@
 @window-head-close:              mix(@text, @window-bg, 60%);
 @window-head-close-hover:        mix(@text, @window-bg, 40%);
 @window-foot-border:             @window-border;
-@window-foot-bg:                 @window-bg;
+@window-foot-bg:                 #F2F2F2;
 @window-fullscreen-bg:           #FFF;
 @window-modalblock-bg:           #000;
 @window-modalblock-opacity:      0.3;
@@ -530,8 +530,8 @@ div.mce-fullscreen {
 }
 
 .mce-window {
-	.border-radius(6px);
-	.box-shadow(@window-box-shadow);
+	.border-radius(10px);
+	box-shadow: 5px 5px 20px 0px #666666;
 	.reset-gradient();
 	background: @window-bg;
 	position: fixed;
@@ -546,8 +546,10 @@ div.mce-fullscreen {
 
 .mce-window-head {
 	padding: 9px 15px;
+	.border-radius(10px 10px 0 0);
 	border-bottom: 1px solid @window-head-border;
 	position: relative;
+	background-image: linear-gradient(to bottom,#fff,#ccc);
 }
 
 .mce-window-head .mce-close {
@@ -570,11 +572,11 @@ div.mce-fullscreen {
 }
 
 .mce-window-head .mce-title {
-	line-height: 20px;
-	font-size: @window-title-font-size;
-	font-weight: bold;
+	line-height: 12px;
+	font-size: 12px;
 	text-rendering: optimizelegibility;
-	padding-right: 10px;
+	text-align: center;
+	text-shadow: 1px 1px 1px #FFF;
 }
 
 .mce-window .mce-container-body {
@@ -586,7 +588,21 @@ div.mce-fullscreen {
 	background-color: @window-foot-bg;
 	border-top: 1px solid @window-foot-border;
 	.border-radius(0 0 6px 6px);
+	.mce-abs-layout {
+		position: static;
+		text-align: center;
+	}
+	.mce-abs-layout-item {
+		position: static;
+		margin: 10px;
+
+		button {
+			width: 74px;
+		}
+	}
 }
+
+
 
 .mce-window-head .mce-dragh {
 	position: absolute;
@@ -1101,7 +1117,7 @@ i.mce-i-checkbox {
 
 .mce-path {
 	.inline-block();
-	padding: 8px;
+	padding: 4px;
 	white-space: normal;
 }
 
