@@ -72,8 +72,8 @@ class ckeditor_texteditor extends texteditor {
     public function head_setup() {
         global $PAGE;
 
-        $PAGE->requires->js('/lib/editor/ckeditor/config.js');
-        $PAGE->requires->js('/lib/editor/ckeditor/ckeditor/ckeditor.js');
+        $PAGE->requires->js('/lib/editor/ckeditor/config.js', true);
+        $PAGE->requires->js('/lib/editor/ckeditor/ckeditor/ckeditor.js', true);
     }
 
     /**
