@@ -137,7 +137,7 @@ fontselect,fontsizeselect,wrap,code,search,replace,wrap,nonbreaking,charmap,tabl
                          'browser_spellcheck' => true,
                          'moodle_plugin_base' => "$CFG->httpswwwroot/lib/editor/tinymcefour/plugins/",
 
-                         'toolbar' => 'formatselect | bold italic | bullist numlist | link unlink | image media | undo redo | underline strikethrough subscript superscript | alignleft aligncenter alignright | outdent indent | forecolor backcolor | ltr rtl | fontselect fontsizeselect | code | searchreplace | nonbreaking charmap table | removeformat paste pastetext | fullscreen'
+                         'toolbar' => 'formatselect | bold italic | bullist numlist | link unlink | image media | undo redo | underline strikethrough subscript superscript | alignleft aligncenter alignright | outdent indent | forecolor backcolor | ltr rtl | fontselect fontsizeselect | code | searchreplace | nonbreaking charmap dragmath table | removeformat paste pastetext | fullscreen'
                         );
         $context = empty($options['context']) ? context_system::instance() : $options['context'];
         editor_tinymcefour_plugin::all_update_init_params($params, $context, $options);
