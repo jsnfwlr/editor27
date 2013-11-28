@@ -47,9 +47,13 @@ if (!preg_match('~^/((?:[0-9.]+)|-1)(/.*)$~', $path, $matches)) {
 list($junk, $version, $innerpath) = $matches;
 
 $tinymceplugin = 'none';
+$tinymceskin = 'none';
 $pluginpath = '';
+$skinpath = '';
 if (strpos($innerpath, '/plugins/') === 0) {
     list($ignore, $ignoremore, $tinymceplugin, $pluginpath) = explode('/', $innerpath, 4);
+} else if (strpos($innerpath, '/skins/') === 0) {
+    list($ignore, $ignoremore, $tinymceskin, $skinpath) = explode('/', $innerpath, 4);
 } else if (strpos($innerpath, '/langs/') === 0) {
     $lang = basename($innerpath, '.js');
 
@@ -128,10 +132,14 @@ if (strpos($innerpath, '/plugins/') === 0) {
 $pluginfolder = $CFG->dirroot . '/lib/editor/tinymcefour/plugins/' . $tinymceplugin;
 $file = $pluginfolder . '/tinymce/' .$pluginpath;
 if ($tinymceplugin == 'none' || !file_exists($file)) {
-    $pluginfolder = $CFG->dirroot . '/lib/editor/tinymcefour/tinymce';
-    $file = $pluginfolder . '/' . $innerpath;
-    if (!file_exists($file)) {
-        print_error('filenotfound');
+    $skinfolder = $CFG->dirroot . '/lib/editor/tinymcefour/skins/' . $tinymceskin;
+    $file = $skinfolder . '/' .$skinpath;
+    if ($tinymceskin == 'none' || !file_exists($file)) {
+        $pluginfolder = $CFG->dirroot . '/lib/editor/tinymcefour/tinymce';
+        $file = $pluginfolder . '/' . $innerpath;
+        if (!file_exists($file)) {
+            print_error('filenotfound');
+        }
     }
 }
 

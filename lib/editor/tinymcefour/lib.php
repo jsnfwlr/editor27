@@ -133,6 +133,7 @@ fontselect,fontsizeselect,wrap,code,search,replace,wrap,nonbreaking,charmap,tabl
                          'plugins'=>'compat3x dragmath link image charmap paste searchreplace code fullscreen media nonbreaking table directionality textcolor',
                          'minWidth' => 0,
                          'menubar' => false,
+                         'skin' => 'moodle',
                          'browser_spellcheck' => true,
                          'moodle_plugin_base' => "$CFG->httpswwwroot/lib/editor/tinymcefour/plugins/",
 
