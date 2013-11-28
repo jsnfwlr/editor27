@@ -797,23 +797,24 @@ body .mce-abs-layout-item, .mce-abs-end {
 
 	&:hover, &:focus {
 		color: @btn-text;
-		.vertical-gradient(darken(@btn-bg, 5%), darken(@btn-bg-hlight, 5%));
+		background-image: radial-gradient(ellipse at center, #ffffff 60%,#dfdfdf 100%);background-color: #ebebeb;
 	}
 
-	&.mce-disabled button, &.mce-disabled:hover button {
+	&.mce-disabled button, &.mce-disabled:hover button, &.mce-disabled, &.mce-disabled:hover {
 		cursor: default;
-		.box-shadow(none);
 		.opacity(@btn-box-disabled-opacity);
+		background: white;
 	}
 
-	&.mce-active, &.mce-active:hover {
-		.vertical-gradient(darken(@btn-bg, 10%), darken(@btn-bg-hlight, 10%));
-		.box-shadow(@btn-box-shadow-active);
+	&.mce-active {
+		background-image: radial-gradient(ellipse at center, #ffffff 40%,#dfdfdf 100%);background-color: #dfdfdf;
+	}
+	&.mce-active:hover {
+		background-image: radial-gradient(ellipse at center, #ffffff 60%,#dfdfdf 100%);background-color: #ebebeb;
 	}
 
 	&:not(.mce-disabled):active {
-		.vertical-gradient(darken(@btn-bg, 10%), darken(@btn-bg-hlight, 10%));
-		.box-shadow(@btn-box-shadow-active);
+
 	}
 }
 
