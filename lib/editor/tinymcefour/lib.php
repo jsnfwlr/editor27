@@ -66,6 +66,31 @@ class tinymcefour_texteditor extends texteditor {
         return true;
     }
 
+    public function head_setup() {
+        global $PAGE, $CFG;
+        $rev = -1;
+        if (!empty($CFG->cachejs) && !$CFG->debugdeveloper) {
+            $pm = get_plugin_manager();
+            $plugininfo = $pm->get_plugin_info('editor_tinymcefour');
+            // If an upgrade is pending - do not cache any files.
+            if ($plugininfo->diskversion != $plugininfo->dbversion) {
+                $rev = -1;
+            } else {
+                $rev = $plugininfo->diskversion;
+            }
+        }
+        $loader = '/lib/editor/tinymcefour/loader.php/' . $rev . '/';
+        if ($CFG->debugdeveloper) {
+            $PAGE->requires->js(new moodle_url($loader . 'tinymce.dev.js'));
+        } else {
+            $PAGE->requires->js(new moodle_url($loader . 'tinymce.js'));
+        }
+    }
+
+    public function escape_selector($id) {
+        return str_replace(':', '\\:', $id);
+    }
+
     /**
      * Use this editor for give element.
      *
@@ -74,32 +99,58 @@ class tinymcefour_texteditor extends texteditor {
      * @param null $fpoptions
      */
     public function use_editor($elementid, array $options=null, $fpoptions=null) {
-        global $PAGE, $CFG;
-        if ($CFG->debugdeveloper) {
-            $PAGE->requires->js(new moodle_url($CFG->httpswwwroot.'/lib/editor/tinymcefour/tinymce/tinymce.dev.js'));
-            $PAGE->requires->js(new moodle_url($CFG->httpswwwroot.'/lib/editor/tinymcefour/tinymce//plugins/compat3x/plugin.min.js'));
-        } else {
-            $PAGE->requires->js(new moodle_url($CFG->httpswwwroot.'/lib/editor/tinymcefour/tinymce/tinymce.js'));
-            $PAGE->requires->js(new moodle_url($CFG->httpswwwroot.'/lib/editor/tinymcefour/tinymce//plugins/compat3x/plugin.min.js'));
+        global $CFG, $PAGE;
+
+        $langrev = -1;
+        if (!empty($CFG->cachejs)) {
+            $langrev = get_string_manager()->get_revision();
         }
-        $PAGE->requires->js_init_call('M.editor_tinymcefour.init_editor', array($elementid, $this->get_init_params($elementid, $options)), true);
+        $language = current_language();
+        if ($language == 'en') {
+            $language = 'en_hack';
+        }
+        $config = get_config('editor_tinymcefour');
+        if (!isset($config->disabledsubplugins)) {
+            $config->disabledsubplugins = '';
+        }
+
+        /** Config from MCE 3
+        wrap,formatselect,wrap,bold,italic,wrap,bullist,numlist,wrap,link,unlink,wrap,image
+
+undo,redo,wrap,underline,strikethrough,sub,sup,wrap,justifyleft,justifycenter,justifyright,wrap,outdent,indent,wrap,forecolor,backcolor,wrap,ltr,rtl
+
+fontselect,fontsizeselect,wrap,code,search,replace,wrap,nonbreaking,charmap,table,wrap,cleanup,removeformat,pastetext,pasteword,wrap,fullscreen
+
+
+        Available plugins for MCE 4
+        formatselect | bold italic | bullist numlist | link unlink | image media | undo redo | underline strikethrough subscript superscript | alignleft aligncenter alignright | outdent indent | forecolor backcolor | ltr rtl | fontselect fontsizeselect | code | searchreplace | nonbreaking charmap table | removeformat paste pastetext | fullscreen
+
+        link image charmap paste searchreplace code fullscreen media nonbreaking table directionality textcolor
+        **/
+        $params = array('selector'=>'#' . $this->escape_selector($elementid),
+                         'moodle_config' => $config,
+                         'language'=>$language,
+                         'plugins'=>'compat3x dragmath link image charmap paste searchreplace code fullscreen media nonbreaking table directionality textcolor',
+                         'minWidth' => 0,
+                         'menubar' => false,
+                         'browser_spellcheck' => true,
+                         'moodle_plugin_base' => "$CFG->httpswwwroot/lib/editor/tinymcefour/plugins/",
+
+                         'toolbar' => 'formatselect | bold italic | bullist numlist | link unlink | image media | undo redo | underline strikethrough subscript superscript | alignleft aligncenter alignright | outdent indent | forecolor backcolor | ltr rtl | fontselect fontsizeselect | code | searchreplace | nonbreaking charmap table | removeformat paste pastetext | fullscreen'
+                        );
+        $context = empty($options['context']) ? context_system::instance() : $options['context'];
+        editor_tinymcefour_plugin::all_update_init_params($params, $context, $options);
+
+        $PAGE->requires->js_init_call('M.editor_tinymcefour.init_editor', array($elementid, $params), true);
+        if ($fpoptions) {
+            $PAGE->requires->js_init_call('M.editor_tinymcefour.init_filepicker', array($elementid, $fpoptions), true);
+        }
+        // Defer loading hack.
+        $PAGE->requires->js_init_code('var p = ' . json_encode($params) . ';
+                                       p.file_browser_callback = function(target_id, url, type, win) {
+                                           return M.editor_tinymcefour.filepicker(target_id, url, type, win);
+                                       };
+                                       tinymce.init(p);');
     }
 
-    /**
-     * Create a params array to init the editor.
-     *
-     * @param string $elementid
-     * @param array $options
-     * @param array $fpoptions
-     */
-    protected function get_init_params($elementid, array $options=null, array $fpoptions=null) {
-        global $PAGE;
-        $params = array(
-            'selector' => 'textarea',
-        );
-//        $directionality = get_string('thisdirection', 'langconfig');
-
-
-        return $params;
-    }
 }
