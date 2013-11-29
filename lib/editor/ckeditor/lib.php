@@ -84,6 +84,20 @@ class ckeditor_texteditor extends texteditor {
     public function get_ckeditor_config($params) {
         global $CFG;
 
+        $toolbarconfig = array(array('name'=>'styles', 'items'=>array('Styles')),
+                               array('name'=>'basicformat', 'items'=>array('Bold', 'Italic')),
+                               array('name'=>'lists', 'items'=>array('BulletedList', 'NumberedList')),
+                               array('name'=>'links', 'items'=>array('Link', 'Unlink')),
+                               array('name'=>'media', 'items'=>array('Image')),
+                               array('name'=>'edits', 'items'=>array('Undo', 'Redo')),
+                               array('name'=>'extraformat', 'items'=>array('Underline', 'Strike', 'Subscript', 'Superscript')),
+                               array('name'=>'alignment', 'items'=>array('JustifyLeft', 'JustifyCenter', 'JustifyRight')),
+                               array('name'=>'indent', 'items'=>array('Indent', 'Outdent')),
+
+                               array('name'=>'clipboard', 'items'=>array('Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', )),
+                               array('name'=>'document', 'items'=>array('Source', 'Find', 'Replace')),
+                              );
+
         return array('customConfig'=>'', // Prevent an extra js file load.
                      'language' => $params['language'], // Pass the current language.
                      'contentsLanguage' => $params['language'], // Pass the current language.
@@ -93,7 +107,8 @@ class ckeditor_texteditor extends texteditor {
                      'removePlugins' => 'about', // Hide about button.
                      'disableNativeSpellChecker' => false,
                      'skin' => 'moodle',
-                     'toolbarCanCollapse' => true, // Ohh - nice.
+                     'toolbarCanCollapse' => true, // Ohh - nice, kinda.
+                     'toolbar' => $toolbarconfig,
         );
     }
 

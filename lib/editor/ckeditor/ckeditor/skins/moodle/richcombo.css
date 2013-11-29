@@ -47,7 +47,7 @@ The visual representation of a rich combo widget looks as follows:
 {
 	display: none;
 	float: left;
-	line-height: 26px;
+	line-height: 28px;
 	vertical-align: top;
 	margin-right: 5px;
 }
@@ -64,6 +64,7 @@ The visual representation of a rich combo widget looks as follows:
 {
 	display: inline-block;
 	float: left;
+	height: 30px;
 	margin: 0 6px 5px 0;
 
 	border: 1px solid #cccccc;
@@ -124,7 +125,7 @@ The visual representation of a rich combo widget looks as follows:
    See: .cke_combo_inlinelabel */
 .cke_combo_text
 {
-	line-height: 26px;
+	line-height: 30px;
 	padding-left: 10px;
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -170,7 +171,7 @@ The visual representation of a rich combo widget looks as follows:
 /* The arrow which is displayed inside of the .cke_combo_open handler. */
 .cke_combo_arrow
 {
-	margin: 11px 0 0;
+	margin: 14px 0 0;
 	float: left;
 
 	/* Pure CSS Arrow */

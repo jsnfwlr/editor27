@@ -64,7 +64,7 @@ Special outer level classes used in this file:
 .cke_toolgroup
 {
 	float: left;
-	margin: 0 6px 5px 0;
+	margin: 0 4px 4px 0;
 }
 
 .cke_hc .cke_toolgroup
@@ -186,6 +186,7 @@ a.cke_button_disabled:active
 	height: 16px;
 	float: left;
 	display: inline-block;
+	opacity: 0.6;
 }
 
 .cke_rtl .cke_button_icon
@@ -204,8 +205,7 @@ a.cke_button_disabled:active
 {
 	display: none;
 	padding-left: 3px;
-	margin-top: 1px;
-	line-height: 17px;
+	line-height: 16px;
 	vertical-align: middle;
 	float: left;
 	cursor: default;
@@ -268,13 +268,13 @@ a.cke_button_disabled:active
    Once it is placed, the very next toolbar is moved to the new row. */
 .cke_toolbar_break
 {
-	display: block;
-	clear: left;
+	display: none;
+	clear: none;
 }
 
 .cke_rtl .cke_toolbar_break
 {
-	clear: right;
+	clear: none;
 }
 
 /* The button, which when clicked hides (collapses) all the toolbars. */

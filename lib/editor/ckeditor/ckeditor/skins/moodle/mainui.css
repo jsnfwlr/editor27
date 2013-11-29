@@ -101,7 +101,7 @@ Special outer level classes used in this file:
 {
 	/*border: 1px solid #b2b2b2;*/
 	border-bottom: 1px solid #cccccc;
-	padding: 6px 8px 2px;
+	padding: 4px;
 
 	/* Allow breaking toolbars when in a narrow editor. (#9947) */
 	white-space: normal;
