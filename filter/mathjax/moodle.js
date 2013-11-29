@@ -257,7 +257,8 @@ MathJax.Hub.Config({
     //  be able to handle that.
     //
     inlineMath: [
-        ['$$','$$']      // uncomment this for standard TeX math delimiters
+        ['$$','$$'],      // uncomment this for standard TeX math delimiters
+        ['\\(','\\)']      // uncomment this for standard TeX math delimiters
     ],
 
     //

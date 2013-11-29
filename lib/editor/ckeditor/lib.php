@@ -83,6 +83,7 @@ class ckeditor_texteditor extends texteditor {
      */
     public function get_ckeditor_config($params) {
         global $CFG;
+        $mathjaxurl = $CFG->wwwroot . '/filter/mathjax/mathjax/MathJax.js?config=../../moodle,Safe,../../language.php?';
 
         $toolbarconfig = array(array('name'=>'styles', 'items'=>array('Styles')),
                                array('name'=>'basicformat', 'items'=>array('Bold', 'Italic')),
@@ -106,6 +107,7 @@ class ckeditor_texteditor extends texteditor {
                      'pasteFromWordPromptCleanup' => true, // Warn before accepting gifts from word.
                      'removePlugins' => 'about', // Hide about button.
                      'disableNativeSpellChecker' => false,
+                     'mathJaxLib' => $mathjaxurl,
                      'skin' => 'moodle',
                      'toolbarCanCollapse' => true, // Ohh - nice, kinda.
                      'toolbar' => $toolbarconfig,
