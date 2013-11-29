@@ -70,13 +70,13 @@ class tinymcefour_texteditor extends texteditor {
         global $PAGE, $CFG;
         $rev = -1;
         if (!empty($CFG->cachejs) && !$CFG->debugdeveloper) {
-            $pm = get_plugin_manager();
+            $pm = core_plugin_manager::instance();
             $plugininfo = $pm->get_plugin_info('editor_tinymcefour');
             // If an upgrade is pending - do not cache any files.
-            if ($plugininfo->diskversion != $plugininfo->dbversion) {
+            if ($plugininfo->versiondisk != $plugininfo->versiondb) {
                 $rev = -1;
             } else {
-                $rev = $plugininfo->diskversion;
+                $rev = $plugininfo->versiondisk;
             }
         }
         $loader = '/lib/editor/tinymcefour/loader.php/' . $rev . '/';
