@@ -94,9 +94,12 @@ class ckeditor_texteditor extends texteditor {
                                array('name'=>'extraformat', 'items'=>array('Underline', 'Strike', 'Subscript', 'Superscript')),
                                array('name'=>'alignment', 'items'=>array('JustifyLeft', 'JustifyCenter', 'JustifyRight')),
                                array('name'=>'indent', 'items'=>array('Indent', 'Outdent')),
-
-                               array('name'=>'clipboard', 'items'=>array('Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', )),
+                               array('name'=>'color', 'items'=>array('TextColor', 'BGColor')),
+                               array('name'=>'input', 'items'=>array('BidiLtr', 'BidiRtl')),
+                               array('name'=>'fonts', 'items'=>array('Font', 'FontSize')),
                                array('name'=>'document', 'items'=>array('Source', 'Find', 'Replace')),
+                               array('name'=>'extras', 'items'=>array('SpecialChar', 'Table')),
+                               array('name'=>'clipboard', 'items'=>array('PasteText', 'PasteFromWord')),
                               );
 
         return array('customConfig'=>'', // Prevent an extra js file load.
@@ -109,6 +112,7 @@ class ckeditor_texteditor extends texteditor {
                      'disableNativeSpellChecker' => false,
                      'mathJaxLib' => $mathjaxurl,
                      'skin' => 'moodle',
+                     'plugins' => 'dialogui,dialog,about,a11yhelp,basicstyles,bidi,blockquote,clipboard,button,panelbutton,panel,floatpanel,colorbutton,colordialog,templates,menu,contextmenu,div,resize,toolbar,elementspath,enterkey,entities,popup,filebrowser,find,fakeobjects,flash,floatingspace,listblock,richcombo,font,forms,format,horizontalrule,htmlwriter,iframe,wysiwygarea,image,indent,indentblock,indentlist,smiley,justify,menubutton,language,link,list,liststyle,magicline,maximize,newpage,pagebreak,pastetext,pastefromword,preview,print,removeformat,save,selectall,showblocks,showborders,sourcearea,specialchar,scayt,stylescombo,tab,table,tabletools,undo,wsc',
                      'toolbarCanCollapse' => true, // Ohh - nice, kinda.
                      'toolbar' => $toolbarconfig,
         );
