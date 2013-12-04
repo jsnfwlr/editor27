@@ -62,7 +62,8 @@ $ckeditorplugin = 'none';
 $ckeditorskin = 'none';
 $pluginpath = '';
 $skinpath = '';
-if (strpos($innerpath, '/plugins/') === 0) {
+if (strpos($innerpath, '/moodle.js') === 0) {
+} else if (strpos($innerpath, '/plugins/') === 0) {
     if (strpos(substr($innerpath, strlen('/plugins/')), '/') !== false) {
         list($ignore, $ignoremore, $ckeditorplugin, $pluginpath) = explode('/', $innerpath, 4);
     }
@@ -138,7 +139,11 @@ if ($ckeditorplugin == 'none' || !file_exists($file)) {
         $pluginfolder = $CFG->dirroot . '/lib/editor/ckeditor/ckeditor';
         $file = $pluginfolder . '/' . $innerpath;
         if (!file_exists($file)) {
-            print_error('filenotfound');
+            if ($innerpath == '/moodle.js') {
+                $file = $CFG->dirroot . '/lib/editor/ckeditor/moodle.js';
+            } else {
+                print_error('filenotfound', $innerpath);
+            }
         }
     }
 }

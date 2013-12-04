@@ -66,8 +66,13 @@ class tinymcefour_texteditor extends texteditor {
         return true;
     }
 
-    public function head_setup() {
+    public function include_js() {
         global $PAGE, $CFG;
+        static $included = false;
+        if ($included) {
+            return;
+        }
+        $included = true;
         $rev = -1;
         if (!empty($CFG->cachejs) && !$CFG->debugdeveloper) {
             $pm = core_plugin_manager::instance();
@@ -100,6 +105,8 @@ class tinymcefour_texteditor extends texteditor {
      */
     public function use_editor($elementid, array $options=null, $fpoptions=null) {
         global $CFG, $PAGE;
+
+        $this->include_js();
 
         $langrev = -1;
         if (!empty($CFG->cachejs)) {
