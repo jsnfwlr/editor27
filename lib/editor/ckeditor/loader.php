@@ -46,6 +46,18 @@ if (!preg_match('~^/((?:[0-9.]+)|-1)(/.*)$~', $path, $matches)) {
 }
 list($junk, $version, $innerpath) = $matches;
 
+function unflatten_lang_string(& $result, $key, $value) {
+    if (strpos($key, ':') == false) {
+        $result[$key] = $value;
+    } else {
+        list($first, $rest) = explode(':', $key, 2);
+        if (!isset($result[$first])) {
+            $result[$first] = array();
+        }
+        unflatten_lang_string($result[$first], $rest, $value);
+    }
+}
+
 $ckeditorplugin = 'none';
 $ckeditorskin = 'none';
 $pluginpath = '';
@@ -59,17 +71,12 @@ if (strpos($innerpath, '/plugins/') === 0) {
         list($ignore, $ignoremore, $ckeditorskin, $skinpath) = explode('/', $innerpath, 4);
     }
 // WIP - Lang loading needs converting.
-} else if (strpos($innerpath, '/langs/') === 0) {
+} else if (strpos($innerpath, '/lang/') === 0) {
     $lang = basename($innerpath, '.js');
 
-    $loadlang = $lang;
-    if ($lang == 'en_hack') {
-        $loadlang = 'en';
-    }
-
     $rev = $version;
-    if (!get_string_manager()->translation_exists($loadlang, false)) {
-        $loadlang = 'en';
+    if (!get_string_manager()->translation_exists($lang, false)) {
+        $lang = 'en';
         $rev = -1; // Do not cache missing langs.
     }
 
@@ -85,41 +92,25 @@ if (strpos($innerpath, '/plugins/') === 0) {
         js_send_cached($candidate, $etag, 'strings.php');
     }
 
-    $strings = get_string_manager()->load_component_strings('editor_ckeditor', $loadlang);
+    $strings = get_string_manager()->load_component_strings('editor_ckeditor', $lang);
     // Add subplugin strings.
     foreach (core_component::get_plugin_list('ckeditor') as $component => $ignored) {
         $componentstrings = get_string_manager()->load_component_strings(
-                'ckeditor_' . $component, $loadlang);
+                'ckeditor_' . $component, $lang);
         foreach ($componentstrings as $key => $value) {
             if (!isset($strings[$key])) {
                 $strings[$key] = $value;
             }
         }
     }
-    $mappings = json_decode(file_get_contents(__DIR__ . '/langstrings.json'));
 
-    // Process the $strings to match expected ckeditor lang array structure.
     $result = array();
-
-    foreach ($mappings as $key=>$value) {
-        $result[$value] = $strings[$key];
-        /*
-        // Oh so nasty ckeditor3 compat hack!
-        $result[$lang . '.' . $value] = $strings[$key];
-        unset($strings[$key]);
-        */
-    }
-    foreach ($strings as $key=>$value) {
-        // Hack1.
-        $key = str_replace(':', '.', $key);
-        $result[$key] = $value;
-        /*
-        // Oh nasty tinymce3 compat hack!
-        $result[$lang . '.' . $key] = $value;
-        */
+    foreach ($strings as $key => $value) {
+        $key = str_replace('ckeditor:', '', $key);
+        unflatten_lang_string($result, $key, $value);
     }
 
-    $output = 'tinymce.EditorManager.addI18n(\''.$lang.'\', '.json_encode($result).');';
+    $output = 'CKEDITOR.lang["' . $lang . '"] = '.json_encode($result) . ';';
 
     if ($rev > -1) {
         js_write_cache_file_content($candidate, $output);
