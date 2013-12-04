@@ -15,16 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Loader for resource files within TinyMCE plugins.
+ * Loader for resource files for ckeditor.
  *
  * This loader handles requests which have the plugin version number in. These
  * requests are set to never expire from cache, to improve performance. Only
- * files within the 'tinymcefour' folder of the plugin will be served.
+ * files within the 'ckeditor' folder of the plugin will be served.
  *
  * Note there are no access checks in this script - you do not have to be
  * logged in to retrieve the plugin resource files.
  *
- * @package editor_tinymcefour
+ * @package editor_ckeditor
  * @copyright 2013 Damyon Wiese
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -39,21 +39,26 @@ require_once($CFG->dirroot . '/lib/jslib.php');
 $path = get_file_argument();
 
 // Param must be of the form [plugin]/[version]/[path] where path is a relative
-// path inside the plugin tinymce folder.
+// path inside the plugin ckeditor folder.
 $matches = array();
 if (!preg_match('~^/((?:[0-9.]+)|-1)(/.*)$~', $path, $matches)) {
     print_error('filenotfound');
 }
 list($junk, $version, $innerpath) = $matches;
 
-$tinymceplugin = 'none';
-$tinymceskin = 'none';
+$ckeditorplugin = 'none';
+$ckeditorskin = 'none';
 $pluginpath = '';
 $skinpath = '';
 if (strpos($innerpath, '/plugins/') === 0) {
-    list($ignore, $ignoremore, $tinymceplugin, $pluginpath) = explode('/', $innerpath, 4);
+    if (strpos(substr($innerpath, strlen('/plugins/')), '/') !== false) {
+        list($ignore, $ignoremore, $ckeditorplugin, $pluginpath) = explode('/', $innerpath, 4);
+    }
 } else if (strpos($innerpath, '/skins/') === 0) {
-    list($ignore, $ignoremore, $tinymceskin, $skinpath) = explode('/', $innerpath, 4);
+    if (strpos(substr($innerpath, strlen('/skins/')), '/') !== false) {
+        list($ignore, $ignoremore, $ckeditorskin, $skinpath) = explode('/', $innerpath, 4);
+    }
+// WIP - Lang loading needs converting.
 } else if (strpos($innerpath, '/langs/') === 0) {
     $lang = basename($innerpath, '.js');
 
@@ -68,7 +73,7 @@ if (strpos($innerpath, '/plugins/') === 0) {
         $rev = -1; // Do not cache missing langs.
     }
 
-    $candidate = "$CFG->localcachedir/editor_tinymcefour/$rev/$lang.js";
+    $candidate = "$CFG->localcachedir/editor_ckeditor/$rev/$lang.js";
     $etag = sha1("$lang/$rev");
 
     if ($rev > -1 and file_exists($candidate)) {
@@ -80,11 +85,11 @@ if (strpos($innerpath, '/plugins/') === 0) {
         js_send_cached($candidate, $etag, 'strings.php');
     }
 
-    $strings = get_string_manager()->load_component_strings('editor_tinymcefour', $loadlang);
+    $strings = get_string_manager()->load_component_strings('editor_ckeditor', $loadlang);
     // Add subplugin strings.
-    foreach (core_component::get_plugin_list('tinymcefour') as $component => $ignored) {
+    foreach (core_component::get_plugin_list('ckeditor') as $component => $ignored) {
         $componentstrings = get_string_manager()->load_component_strings(
-                'tinymcefour_' . $component, $loadlang);
+                'ckeditor_' . $component, $loadlang);
         foreach ($componentstrings as $key => $value) {
             if (!isset($strings[$key])) {
                 $strings[$key] = $value;
@@ -93,21 +98,25 @@ if (strpos($innerpath, '/plugins/') === 0) {
     }
     $mappings = json_decode(file_get_contents(__DIR__ . '/langstrings.json'));
 
-    // Process the $strings to match expected tinymce lang array structure.
+    // Process the $strings to match expected ckeditor lang array structure.
     $result = array();
 
     foreach ($mappings as $key=>$value) {
         $result[$value] = $strings[$key];
-        // Oh so nasty tinymce3 compat hack!
+        /*
+        // Oh so nasty ckeditor3 compat hack!
         $result[$lang . '.' . $value] = $strings[$key];
         unset($strings[$key]);
+        */
     }
     foreach ($strings as $key=>$value) {
         // Hack1.
         $key = str_replace(':', '.', $key);
         $result[$key] = $value;
+        /*
         // Oh nasty tinymce3 compat hack!
         $result[$lang . '.' . $key] = $value;
+        */
     }
 
     $output = 'tinymce.EditorManager.addI18n(\''.$lang.'\', '.json_encode($result).');';
@@ -129,13 +138,13 @@ if (strpos($innerpath, '/plugins/') === 0) {
 // except for the difference between '-1' and anything else.
 
 // Check the file exists.
-$pluginfolder = $CFG->dirroot . '/lib/editor/tinymcefour/plugins/' . $tinymceplugin;
-$file = $pluginfolder . '/tinymce/' .$pluginpath;
-if ($tinymceplugin == 'none' || !file_exists($file)) {
-    $skinfolder = $CFG->dirroot . '/lib/editor/tinymcefour/skins/' . $tinymceskin;
+$pluginfolder = $CFG->dirroot . '/lib/editor/ckeditor/plugins/' . $ckeditorplugin;
+$file = $pluginfolder . '/ckeditor/' .$pluginpath;
+if ($ckeditorplugin == 'none' || !file_exists($file)) {
+    $skinfolder = $CFG->dirroot . '/lib/editor/ckeditor/skins/' . $ckeditorskin;
     $file = $skinfolder . '/' .$skinpath;
-    if ($tinymceskin == 'none' || !file_exists($file)) {
-        $pluginfolder = $CFG->dirroot . '/lib/editor/tinymcefour/tinymce';
+    if ($ckeditorskin == 'none' || !file_exists($file)) {
+        $pluginfolder = $CFG->dirroot . '/lib/editor/ckeditor/ckeditor';
         $file = $pluginfolder . '/' . $innerpath;
         if (!file_exists($file)) {
             print_error('filenotfound');
@@ -161,8 +170,8 @@ $mimetype = mimeinfo('type', $file);
 // For JS files, these can be minified and stored in cache.
 if ($mimetype === 'application/x-javascript' && $allowcache) {
     // Flatten filename and include cache location.
-    $cache = $CFG->localcachedir . '/editor_tinymcefour/pluginjs';
-    $cachefile = $cache . '/' . $tinymceplugin . '/' . $version . '/' .
+    $cache = $CFG->localcachedir . '/editor_ckeditor/pluginjs';
+    $cachefile = $cache . '/' . $ckeditorplugin . '/' . $version . '/' .
             str_replace('/', '_', $innerpath);
 
     // If it doesn't exist, minify it and save to that location.

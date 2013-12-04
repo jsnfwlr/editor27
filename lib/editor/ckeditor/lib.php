@@ -70,10 +70,23 @@ class ckeditor_texteditor extends texteditor {
      * Sets up head code if necessary.
      */
     public function head_setup() {
-        global $PAGE;
+        global $PAGE, $CFG;
+        $rev = -1;
+        if (!empty($CFG->cachejs) && !$CFG->debugdeveloper) {
+            $pm = core_plugin_manager::instance();
+            $plugininfo = $pm->get_plugin_info('editor_tinymcefour');
+            // If an upgrade is pending - do not cache any files.
+            if ($plugininfo->versiondisk != $plugininfo->versiondb) {
+                $rev = -1;
+            } else {
+                $rev = $plugininfo->versiondisk;
+            }
+        }
 
-        $PAGE->requires->js('/lib/editor/ckeditor/config.js', true);
-        $PAGE->requires->js('/lib/editor/ckeditor/ckeditor/ckeditor.js', true);
+        $loader = '/lib/editor/ckeditor/loader.php/' . $rev . '/';
+        $jsinit = 'CKEDITOR_BASEPATH = M.cfg.wwwroot + "' . $loader . '"';
+        $PAGE->requires->js_init_code($jsinit);
+        $PAGE->requires->js(new moodle_url($loader . 'ckeditor.js'));
     }
 
     /**
