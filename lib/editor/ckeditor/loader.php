@@ -164,6 +164,7 @@ if ($allowcache) {
 $mimetype = mimeinfo('type', $file);
 
 // For JS files, these can be minified and stored in cache.
+$allowcache = false;
 if ($mimetype === 'application/x-javascript' && $allowcache) {
     // Flatten filename and include cache location.
     $cache = $CFG->localcachedir . '/editor_ckeditor/pluginjs';
