@@ -84,14 +84,16 @@ if (strpos($innerpath, '/moodle.js') === 0) {
     $candidate = "$CFG->localcachedir/editor_ckeditor/$rev/$lang.js";
     $etag = sha1("$lang/$rev");
 
+    /*
     if ($rev > -1 and file_exists($candidate)) {
         if (!empty($_SERVER['HTTP_IF_NONE_MATCH']) || !empty($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
             // We do not actually need to verify the etag value because our files
             // never change in cache because we increment the rev parameter.
             js_send_unmodified(filemtime($candidate), $etag);
         }
-        js_send_cached($candidate, $etag, 'strings.php');
+        js_send_cached($candidate, $etag, $lang . '.js');
     }
+    */
 
     $strings = get_string_manager()->load_component_strings('editor_ckeditor', $lang);
     // Add subplugin strings.
@@ -113,14 +115,15 @@ if (strpos($innerpath, '/moodle.js') === 0) {
 
     $output = 'CKEDITOR.lang["' . $lang . '"] = '.json_encode($result) . ';';
 
+    /*
     if ($rev > -1) {
         js_write_cache_file_content($candidate, $output);
         // Verify nothing failed in cache file creation.
         clearstatcache();
         if (file_exists($candidate)) {
-            js_send_cached($candidate, $etag, $lang . '.js');
+            js_send_uncached($output, $etag, $lang . '.js');
         }
-    }
+    }*/
 
     js_send_uncached($output, $lang . '.js');
     die();
