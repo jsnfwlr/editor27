@@ -69,8 +69,15 @@ class ckeditor_texteditor extends texteditor {
     /**
      * Sets up head code if necessary.
      */
-    public function head_setup() {
+    public function include_js() {
         global $PAGE, $CFG;
+        static $included = false;
+
+        if ($included) {
+            return;
+        }
+        $included = true;
+
         $rev = -1;
         if (!empty($CFG->cachejs) && !$CFG->debugdeveloper) {
             $pm = core_plugin_manager::instance();
@@ -86,6 +93,7 @@ class ckeditor_texteditor extends texteditor {
         $loader = '/lib/editor/ckeditor/loader.php/' . $rev . '/';
         $jsinit = 'CKEDITOR_BASEPATH = M.cfg.wwwroot + "' . $loader . '"';
         $PAGE->requires->js_init_code($jsinit);
+        $PAGE->requires->js(new moodle_url($loader . 'moodle.js'));
         $PAGE->requires->js(new moodle_url($loader . 'ckeditor.js'));
     }
 
@@ -115,7 +123,7 @@ class ckeditor_texteditor extends texteditor {
                                array('name'=>'clipboard', 'items'=>array('PasteText', 'PasteFromWord')),
                               );
 
-        return array('customConfig'=>'', // Prevent an extra js file load.
+        $options = array('customConfig'=>'', // Prevent an extra js file load.
                      'language' => $params['language'], // Pass the current language.
                      'contentsLanguage' => $params['language'], // Pass the current language.
                      'contentsCSS' => $params['content_css'], // Apply theme styles to the content.
@@ -129,6 +137,10 @@ class ckeditor_texteditor extends texteditor {
                      'toolbarCanCollapse' => true, // Ohh - nice, kinda.
                      'toolbar' => $toolbarconfig,
         );
+        if (isset($params['filepickeroptions'])) {
+            $options['filebrowserBrowseUrl'] = $CFG->wwwroot . '/lib/editor/ckeditor/browser.php';
+        }
+        return $options;
     }
 
     /**
@@ -140,6 +152,8 @@ class ckeditor_texteditor extends texteditor {
      */
     public function use_editor($elementid, array $options=null, $fpoptions=null) {
         global $PAGE;
+
+        $this->include_js();
 
         $params = $this->get_init_params($elementid, $options, $fpoptions);
         $config = $this->get_ckeditor_config($params);

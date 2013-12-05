@@ -46,11 +46,24 @@ if (!preg_match('~^/((?:[0-9.]+)|-1)(/.*)$~', $path, $matches)) {
 }
 list($junk, $version, $innerpath) = $matches;
 
+function unflatten_lang_string(& $result, $key, $value) {
+    if (strpos($key, ':') == false) {
+        $result[$key] = $value;
+    } else {
+        list($first, $rest) = explode(':', $key, 2);
+        if (!isset($result[$first])) {
+            $result[$first] = array();
+        }
+        unflatten_lang_string($result[$first], $rest, $value);
+    }
+}
+
 $ckeditorplugin = 'none';
 $ckeditorskin = 'none';
 $pluginpath = '';
 $skinpath = '';
-if (strpos($innerpath, '/plugins/') === 0) {
+if (strpos($innerpath, '/moodle.js') === 0) {
+} else if (strpos($innerpath, '/plugins/') === 0) {
     if (strpos(substr($innerpath, strlen('/plugins/')), '/') !== false) {
         list($ignore, $ignoremore, $ckeditorplugin, $pluginpath) = explode('/', $innerpath, 4);
     }
@@ -59,76 +72,58 @@ if (strpos($innerpath, '/plugins/') === 0) {
         list($ignore, $ignoremore, $ckeditorskin, $skinpath) = explode('/', $innerpath, 4);
     }
 // WIP - Lang loading needs converting.
-} else if (strpos($innerpath, '/langs/') === 0) {
+} else if (strpos($innerpath, '/lang/') === 0) {
     $lang = basename($innerpath, '.js');
 
-    $loadlang = $lang;
-    if ($lang == 'en_hack') {
-        $loadlang = 'en';
-    }
-
     $rev = $version;
-    if (!get_string_manager()->translation_exists($loadlang, false)) {
-        $loadlang = 'en';
+    if (!get_string_manager()->translation_exists($lang, false)) {
+        $lang = 'en';
         $rev = -1; // Do not cache missing langs.
     }
 
     $candidate = "$CFG->localcachedir/editor_ckeditor/$rev/$lang.js";
     $etag = sha1("$lang/$rev");
 
+    /*
     if ($rev > -1 and file_exists($candidate)) {
         if (!empty($_SERVER['HTTP_IF_NONE_MATCH']) || !empty($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
             // We do not actually need to verify the etag value because our files
             // never change in cache because we increment the rev parameter.
             js_send_unmodified(filemtime($candidate), $etag);
         }
-        js_send_cached($candidate, $etag, 'strings.php');
+        js_send_cached($candidate, $etag, $lang . '.js');
     }
+    */
 
-    $strings = get_string_manager()->load_component_strings('editor_ckeditor', $loadlang);
+    $strings = get_string_manager()->load_component_strings('editor_ckeditor', $lang);
     // Add subplugin strings.
     foreach (core_component::get_plugin_list('ckeditor') as $component => $ignored) {
         $componentstrings = get_string_manager()->load_component_strings(
-                'ckeditor_' . $component, $loadlang);
+                'ckeditor_' . $component, $lang);
         foreach ($componentstrings as $key => $value) {
             if (!isset($strings[$key])) {
                 $strings[$key] = $value;
             }
         }
     }
-    $mappings = json_decode(file_get_contents(__DIR__ . '/langstrings.json'));
 
-    // Process the $strings to match expected ckeditor lang array structure.
     $result = array();
-
-    foreach ($mappings as $key=>$value) {
-        $result[$value] = $strings[$key];
-        /*
-        // Oh so nasty ckeditor3 compat hack!
-        $result[$lang . '.' . $value] = $strings[$key];
-        unset($strings[$key]);
-        */
-    }
-    foreach ($strings as $key=>$value) {
-        // Hack1.
-        $key = str_replace(':', '.', $key);
-        $result[$key] = $value;
-        /*
-        // Oh nasty tinymce3 compat hack!
-        $result[$lang . '.' . $key] = $value;
-        */
+    foreach ($strings as $key => $value) {
+        $key = str_replace('ckeditor:', '', $key);
+        unflatten_lang_string($result, $key, $value);
     }
 
-    $output = 'tinymce.EditorManager.addI18n(\''.$lang.'\', '.json_encode($result).');';
+    $output = 'CKEDITOR.lang["' . $lang . '"] = '.json_encode($result) . ';';
 
+    /*
     if ($rev > -1) {
         js_write_cache_file_content($candidate, $output);
         // Verify nothing failed in cache file creation.
         clearstatcache();
         if (file_exists($candidate)) {
-            js_send_cached($candidate, $etag, $lang . '.js');
+            js_send_uncached($output, $etag, $lang . '.js');
         }
-    }
+    }*/
 
     js_send_uncached($output, $lang . '.js');
     die();
@@ -147,7 +142,11 @@ if ($ckeditorplugin == 'none' || !file_exists($file)) {
         $pluginfolder = $CFG->dirroot . '/lib/editor/ckeditor/ckeditor';
         $file = $pluginfolder . '/' . $innerpath;
         if (!file_exists($file)) {
-            print_error('filenotfound');
+            if ($innerpath == '/moodle.js') {
+                $file = $CFG->dirroot . '/lib/editor/ckeditor/moodle.js';
+            } else {
+                print_error('filenotfound', $innerpath);
+            }
         }
     }
 }
@@ -168,6 +167,7 @@ if ($allowcache) {
 $mimetype = mimeinfo('type', $file);
 
 // For JS files, these can be minified and stored in cache.
+$allowcache = false;
 if ($mimetype === 'application/x-javascript' && $allowcache) {
     // Flatten filename and include cache location.
     $cache = $CFG->localcachedir . '/editor_ckeditor/pluginjs';
