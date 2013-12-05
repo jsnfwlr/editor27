@@ -1,3 +1,4 @@
+<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,21 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Atto text editor collapse plugin.
+ * TinyMCE Toolbar collapse plugin.
  *
- * @package    editor-atto
- * @copyright  2013 Damyon Wiese  <damyon@moodle.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   tinymcefour_collapse
+ * @copyright 2013 Damyon Wiese
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-M.atto_collapse = M.atto_collapse || {
-    init : function(params) {
-        var click = function(e, elementid) {
-            e.preventDefault();
 
-            Y.one('#' + elementid + '_toolbar').toggleClass('collapsetoolbar');
-        };
+defined('MOODLE_INTERNAL') || die();
 
-        M.editor_atto.add_toolbar_button(params.elementid, 'collapse', params.icon, params.group, click);
-        Y.one('#' + params.elementid + '_toolbar').toggleClass('collapsetoolbar');
-    }
-};
+// The current plugin version (Date: YYYYMMDDXX).
+$plugin->version   = 2013110500;
+// Required Moodle version.
+$plugin->requires  = 2013110500;
+// Full name of the plugin (used for diagnostics).
+$plugin->component = 'tinymcefour_collapse';

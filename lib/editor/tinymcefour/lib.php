@@ -137,14 +137,14 @@ fontselect,fontsizeselect,wrap,code,search,replace,wrap,nonbreaking,charmap,tabl
         $params = array('selector'=>'#' . $this->escape_selector($elementid),
                          'moodle_config' => $config,
                          'language'=>$language,
-                         'plugins'=>'compat3x dragmath link image charmap paste searchreplace code fullscreen media nonbreaking table directionality textcolor',
+                         'plugins'=>'compat3x collapse dragmath link image charmap paste searchreplace code fullscreen media nonbreaking table directionality textcolor',
                          'minWidth' => 0,
                          'menubar' => false,
                          'skin' => 'moodle',
                          'browser_spellcheck' => true,
                          'moodle_plugin_base' => "$CFG->httpswwwroot/lib/editor/tinymcefour/plugins/",
 
-                         'toolbar' => 'formatselect | bold italic | bullist numlist | link unlink | image media | undo redo | underline strikethrough subscript superscript | alignleft aligncenter alignright | outdent indent | forecolor backcolor | ltr rtl | fontselect fontsizeselect | code | searchreplace | nonbreaking charmap dragmath table | removeformat paste pastetext | fullscreen'
+                         'toolbar' => 'collapse | formatselect | bold italic | bullist numlist | link unlink | image media | undo redo | underline strikethrough subscript superscript | alignleft aligncenter alignright | outdent indent | forecolor backcolor | ltr rtl | fontselect fontsizeselect | code | searchreplace | nonbreaking charmap dragmath table | removeformat paste pastetext | fullscreen'
                         );
         $context = empty($options['context']) ? context_system::instance() : $options['context'];
         editor_tinymcefour_plugin::all_update_init_params($params, $context, $options);

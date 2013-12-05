@@ -71,6 +71,10 @@ div.editor_atto_toolbar div.atto_group {
     background: #FFF;
 }
 
+div.editor_atto_toolbar.collapsetoolbar .atto_group + .atto_group + .atto_group + .atto_group {
+    display: none;
+}
+
 .editor_atto_content img {
     resize: both; overflow: auto;
 }
