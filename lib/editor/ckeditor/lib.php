@@ -136,7 +136,7 @@ class ckeditor_texteditor extends texteditor {
                      'disableNativeSpellChecker' => false,
                      'mathJaxLib' => $mathjaxurl,
                      'skin' => 'moodle',
-                     'toolbarCanCollapse' => true, // Ohh - nice, kinda.
+                     'toolbarCanCollapse' => false, // Ohh - nice, kinda.
                      'toolbar' => $toolbarconfig,
         );
         if (isset($params['filepickeroptions'])) {

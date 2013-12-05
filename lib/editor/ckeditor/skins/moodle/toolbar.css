@@ -344,3 +344,20 @@ a.cke_button_disabled:active
 	margin-top: 0;
 	margin-right: 2px;
 }
+
+.cke_button__toolbartoggle_icon {
+	background-image: url('images/icon.png');
+}
+
+.hidebuttons #cke_27,
+.hidebuttons #cke_30,
+.hidebuttons #cke_35,
+.hidebuttons #cke_39,
+.hidebuttons #cke_42,
+.hidebuttons #cke_45,
+.hidebuttons #cke_48,
+.hidebuttons #cke_49,
+.hidebuttons #cke_53,
+.hidebuttons #cke_57 {
+	display: none !important;
+}
