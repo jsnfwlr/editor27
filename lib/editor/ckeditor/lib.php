@@ -106,7 +106,8 @@ class ckeditor_texteditor extends texteditor {
         global $CFG;
         $mathjaxurl = $CFG->wwwroot . '/filter/mathjax/mathjax/MathJax.js?config=../../moodle,Safe,../../language.php?';
 
-        $toolbarconfig = array(array('name'=>'styles', 'items'=>array('Styles')),
+        $toolbarconfig = array(array('name'=>'toggle', 'items'=>array('ToolbarToggle')),
+                               array('name'=>'styles', 'items'=>array('Styles')),
                                array('name'=>'basicformat', 'items'=>array('Bold', 'Italic')),
                                array('name'=>'lists', 'items'=>array('BulletedList', 'NumberedList')),
                                array('name'=>'links', 'items'=>array('Link', 'Unlink')),
@@ -119,13 +120,15 @@ class ckeditor_texteditor extends texteditor {
                                array('name'=>'input', 'items'=>array('BidiLtr', 'BidiRtl')),
                                array('name'=>'fonts', 'items'=>array('Font', 'FontSize')),
                                array('name'=>'document', 'items'=>array('Source', 'Find', 'Replace')),
-                               array('name'=>'extras', 'items'=>array('SpecialChar', 'Table')),
+                               array('name'=>'extras', 'items'=>array('SpecialChar', 'Mathjax', 'Table')),
                                array('name'=>'clipboard', 'items'=>array('PasteText', 'PasteFromWord')),
                               );
 
         $options = array('customConfig'=>'', // Prevent an extra js file load.
                      'language' => $params['language'], // Pass the current language.
                      'contentsLanguage' => $params['language'], // Pass the current language.
+                     'plugins' => 'kitchensink,dialogui,dialog,about,a11yhelp,basicstyles,bidi,blockquote,clipboard,button,panelbutton,panel,floatpanel,colorbutton,colordialog,templates,menu,contextmenu,div,resize,toolbar,elementspath,enterkey,entities,popup,filebrowser,find,fakeobjects,flash,floatingspace,listblock,richcombo,font,forms,format,horizontalrule,htmlwriter,iframe,wysiwygarea,image,indent,indentblock,indentlist,smiley,justify,menubutton,language,link,list,liststyle,magicline,maximize,newpage,pagebreak,pastetext,pastefromword,preview,print,removeformat,save,selectall,showblocks,showborders,sourcearea,specialchar,scayt,stylescombo,tab,table,tabletools,undo,wsc',
+                     'extraPlugins' => 'mathjax',
                      'contentsCSS' => $params['content_css'], // Apply theme styles to the content.
                      'contentsLangDirection' => $params['directionality'], // Set content direction.
                      'pasteFromWordPromptCleanup' => true, // Warn before accepting gifts from word.
@@ -133,7 +136,6 @@ class ckeditor_texteditor extends texteditor {
                      'disableNativeSpellChecker' => false,
                      'mathJaxLib' => $mathjaxurl,
                      'skin' => 'moodle',
-                     'plugins' => 'dialogui,dialog,about,a11yhelp,basicstyles,bidi,blockquote,clipboard,button,panelbutton,panel,floatpanel,colorbutton,colordialog,templates,menu,contextmenu,div,resize,toolbar,elementspath,enterkey,entities,popup,filebrowser,find,fakeobjects,flash,floatingspace,listblock,richcombo,font,forms,format,horizontalrule,htmlwriter,iframe,wysiwygarea,image,indent,indentblock,indentlist,smiley,justify,menubutton,language,link,list,liststyle,magicline,maximize,newpage,pagebreak,pastetext,pastefromword,preview,print,removeformat,save,selectall,showblocks,showborders,sourcearea,specialchar,scayt,stylescombo,tab,table,tabletools,undo,wsc',
                      'toolbarCanCollapse' => true, // Ohh - nice, kinda.
                      'toolbar' => $toolbarconfig,
         );
