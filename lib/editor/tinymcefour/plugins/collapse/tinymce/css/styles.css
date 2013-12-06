@@ -1,0 +1,3 @@
+.collapse.mce-tinymce .mce-btn-group + .mce-btn-group + .mce-btn-group + .mce-btn-group + .mce-btn-group + .mce-btn-group + .mce-btn-group {
+    display: none;
+}

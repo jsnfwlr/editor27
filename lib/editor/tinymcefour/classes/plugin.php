@@ -332,6 +332,7 @@ abstract class editor_tinymcefour_plugin {
 
         // Get URL of main JS file and store in params.
         $jsurl = $this->get_tinymcefour_file_url($jsfile, false);
+
         $params['moodle_init_plugins'] .= $pluginname . ':' . $jsurl;
     }
 
@@ -369,6 +370,7 @@ abstract class editor_tinymcefour_plugin {
             $jsurl = '/plugins/' . $this->plugin . '/tinymce/' . $file;
         }
 
+
         if ($absolute) {
             $jsurl = $CFG->wwwroot . '/lib/editor/tinymcefour/' . $jsurl;
         }
@@ -385,7 +387,7 @@ abstract class editor_tinymcefour_plugin {
         global $CFG;
 
         $plugin = new stdClass;
-        require($CFG->dirroot . '/lib/editor/tinymce/plugins/' . $this->plugin . '/version.php');
+        require($CFG->dirroot . '/lib/editor/tinymcefour/plugins/' . $this->plugin . '/version.php');
         return $plugin->version;
     }
 

@@ -58,5 +58,5 @@ function atto_mathjax_init_editor($elementid) {
  * @return int the absolute position within the toolbar
  */
 function atto_mathjax_sort_order() {
-    return 9.5;
+    return 2.5;
 }

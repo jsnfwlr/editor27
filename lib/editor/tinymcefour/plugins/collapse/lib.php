@@ -1,3 +1,4 @@
+<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -13,22 +14,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
- * Atto text editor collapse plugin.
+ * Plugin for collapsing toolbars.
  *
- * @package    editor-atto
- * @copyright  2013 Damyon Wiese  <damyon@moodle.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   tinymcefour_collapse
+ * @copyright 2012 The Open University
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-M.atto_collapse = M.atto_collapse || {
-    init : function(params) {
-        var click = function(e, elementid) {
-            e.preventDefault();
+class tinymcefour_collapse extends editor_tinymcefour_plugin {
+    /** @var array list of buttons defined by this plugin */
+    protected $buttons = array('collapse');
 
-            Y.one('#' + elementid + '_toolbar').toggleClass('collapsetoolbar');
-        };
+    protected function update_init_params(array &$params, context $context,
+            array $options = null) {
 
-        M.editor_atto.add_toolbar_button(params.elementid, 'collapse', params.icon, params.group, click);
-        Y.one('#' + params.elementid + '_toolbar').toggleClass('collapsetoolbar');
+        $this->add_button_before($params, 'collapse', 'formatselect');
+
+        // Add JS file, which uses default name.
+        $this->add_js_plugin($params, 'collapse', 'plugin.js');
     }
-};
+}
