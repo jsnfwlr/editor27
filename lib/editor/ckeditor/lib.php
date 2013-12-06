@@ -139,6 +139,7 @@ class ckeditor_texteditor extends texteditor {
                      'toolbarCanCollapse' => false, // Ohh - nice, kinda.
                      'toolbar' => $toolbarconfig,
         );
+
         if (isset($params['filepickeroptions'])) {
             $options['filebrowserBrowseUrl'] = $CFG->wwwroot . '/lib/editor/ckeditor/browser.php';
         }
@@ -160,7 +161,8 @@ class ckeditor_texteditor extends texteditor {
         $params = $this->get_init_params($elementid, $options, $fpoptions);
         $config = $this->get_ckeditor_config($params);
         $config['params'] = $params;
-        $jscode = 'CKEDITOR.replace("' . $elementid . '", ' . json_encode($config) . ')';
+        $jscode = 'var ed = CKEDITOR.replace("' . $elementid . '", ' . json_encode($config) . ');';
+        $jscode .= 'ed.on("change", function (e) {e.editor.updateElement();});';
 
         $PAGE->requires->js_init_code($jscode);
     }
